@@ -3,6 +3,7 @@ import csv
 # from classes.drink import Drink
 # from persistence.file_handling import read_from_file
 drinks = []
+drinks2 = []
 
 class Drink:
     def __init__(self, drink_name, container, volume):
@@ -42,10 +43,29 @@ def write_drinks_db(list_name):
         "ali_test"
         )
     cursor = connection.cursor()
-    cursor.execute("DELETE FROM drinks")
-    for drink in list_name:
-        cursor.execute(f"INSERT IGNORE INTO drinks (drink_name, drink_container, volume) values ('{drink.drink_name}', '{drink.container}', '{drink.volume}')")
-    connection.commit()
+    cursor.execute("SELECT drink_id, drink_name, drink_container, volume FROM drinks")
+    rows = cursor.fetchall()
+    for row in rows:
+        drink = Drink(row[1], row[2], row[3])
+        drinks2.append(drink)
+    
+    for drink in drinks:
+        drink_found = False
+        for drink_1 in drinks2:
+            if drink.drink_name == drink_1.drink_name:
+                drink_found = True
+        if drink_found == False:
+            connection = pymysql.connect(
+                "localhost",
+                "root",
+                "barnformtreefred",
+                "ali_test"
+                )
+            cursor = connection.cursor()
+            cursor.execute("DELETE FROM drinks")
+            for drink in list_name:
+                cursor.execute(f"INSERT IGNORE INTO drinks (drink_name, drink_container, volume) values ('{drink.drink_name}', '{drink.container}', '{drink.volume}')")
+            connection.commit()
 write_drinks_db(drinks)
 def write_people_db(list_name):
     connection = pymysql.connect(
@@ -66,3 +86,21 @@ def write_people_db(list_name):
 # print(drinks_list)
 # for i in drinks_list:
 #     sql = "INSERT INTO drinks (drink_name, drink_container, volume) values (%s, %s, %s)"
+
+# connection = pymysql.connect(
+#         "localhost",
+#         "root",
+#         "barnformtreefred",
+#         "ali_test"
+#         )
+# cursor = connection.cursor()
+# cursor.execute("SELECT drink_id, drink_name, drink_container, volume FROM drinks")
+# rows = cursor.fetchall()
+# for row in rows:
+#     drink = Drink(row[1], row[2], row[3])
+#     drinks2.append(drink)
+
+# for drink in drinks:
+#     for drink_1 in drinks2:
+#         if drink.drink_name == drink_1.drink_name:
+#             exit()

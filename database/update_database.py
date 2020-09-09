@@ -1,6 +1,7 @@
 import pymysql
 
-
+from classes.classes import Drink
+from classes.person import Person
 def write_drinks_db(list_name):
     drinks2 = []
     connection = pymysql.connect(

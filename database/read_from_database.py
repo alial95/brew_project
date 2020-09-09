@@ -1,5 +1,6 @@
 import pymysql
-
+from classes.person import Person
+from classes.drink import Drink
 
 def read_database_people(list_name):
     connection = pymysql.connect(

@@ -2,6 +2,7 @@ import pymysql
 
 from classes.classes import Drink
 from classes.person import Person
+
 def write_drinks_db(list_name):
     drinks2 = []
     connection = pymysql.connect(
@@ -33,7 +34,7 @@ def write_drinks_db(list_name):
             cursor.execute(f"INSERT INTO drinks (drink_name, container, volume) values ('{drink.drink_name}', '{drink.container}', '{drink.volume}')")
             connection.commit()
 
-def write_people_db(list_name):
+def write_people_db(list_name, list_2):
     people_1 = []
     connection = pymysql.connect(
         "localhost",
@@ -47,7 +48,7 @@ def write_people_db(list_name):
     for row in rows:
         person = Person(row[0], row[1])
         people_1.append(person)
-    
+    favourite_drink_id = list_2[2]
     for person in list_name:
         # print(people_list)
         person_found = False
@@ -62,6 +63,6 @@ def write_people_db(list_name):
                 "ali_test"
                 )
             cursor = connection.cursor()
-            cursor.execute(f"INSERT INTO person(person_name, age) values ('{person.name}', '{person.age}')")
+            cursor.execute(f"INSERT INTO person(person_name, age, favourite_drink_id) values ('{person.name}', '{person.age}', '{favourite_drink_id.drink_id}')")
             connection.commit()
            

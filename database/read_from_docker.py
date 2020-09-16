@@ -4,13 +4,6 @@ from classes.drink import Drink
 from classes.preference_test import Preference
 
 CREDENTIALS = {
-    "host": "localhost",
-    "port": 3306,
-    "user": "root",
-    "password": "barnformtreefred",
-    "db": "ali_test"
-}
-CREDENTIALS_DOCKER = {
     'host':'localhost',
     'port': 3306,
     'user':'root',
@@ -18,7 +11,7 @@ CREDENTIALS_DOCKER = {
     'db': 'brew'
 }
 
-def read_database_people(list_name, credentials):
+def read_database_people_docker(list_name, credentials=CREDENTIALS):
     connection = pymysql.connect(**credentials)
     cursor = connection.cursor()
     cursor.execute("SELECT person_id, person_name, age FROM person")
@@ -29,7 +22,7 @@ def read_database_people(list_name, credentials):
     cursor.close()
     connection.close()
     return list_name
-def read_preference(list_name, credentials):
+def read_preference_docker(list_name, credentials=CREDENTIALS):
     connection = pymysql.connect(**credentials)
     cursor = connection.cursor()
     cursor.execute("SELECT person_name, d.drink_name, favourite_drink_id FROM person join drinks as d on favourite_drink_id = d.drink_id")
@@ -40,7 +33,7 @@ def read_preference(list_name, credentials):
     cursor.close()
     connection.close()
     return list_name
-def read_database_drinks(list_name, credentials):
+def read_database_drinks_docker(list_name, credentials=CREDENTIALS):
     connection = pymysql.connect(**credentials)
     cursor = connection.cursor()
     cursor.execute("SELECT drink_id, drink_name, container, volume FROM drinks")
@@ -51,4 +44,3 @@ def read_database_drinks(list_name, credentials):
     cursor.close()
     connection.close()
     return list_name
-

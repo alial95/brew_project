@@ -2,15 +2,22 @@ import pymysql
 
 from classes.classes import Drink
 from classes.person import Person
-
-def write_drinks_db(list_name):
+CREDENTIALS = {
+    "localhost",
+    "root",
+    "barnformtreefred",
+    "ali_test"
+}
+CREDENTIALS_DOCKER = {
+    'host':'localhost',
+    'port': 3306,
+    'user':'root',
+    'password': 'root_password',
+    'db': 'brew'
+}
+def write_drinks_db(list_name, credentials):
     drinks2 = []
-    connection = pymysql.connect(
-        "localhost",
-        "root",
-        "barnformtreefred",
-        "ali_test"
-        )
+    connection = pymysql.connect(**credentials)
     cursor = connection.cursor()
     cursor.execute("SELECT drink_id, drink_name, container, volume FROM drinks")
     rows = cursor.fetchall()
@@ -24,24 +31,14 @@ def write_drinks_db(list_name):
             if drink.drink_name == drink_1.drink_name:
                 drink_found = True
         if drink_found == False:
-            connection = pymysql.connect(
-                "localhost",
-                "root",
-                "barnformtreefred",
-                "ali_test"
-                )
+            connection = pymysql.connect(**credentials)
             cursor = connection.cursor()
             cursor.execute(f"INSERT INTO drinks (drink_name, container, volume) values ('{drink.drink_name}', '{drink.container}', '{drink.volume}')")
             connection.commit()
 
-def write_people_db(list_name, list_2):
+def write_people_db(list_name, list_2, credentials):
     people_1 = []
-    connection = pymysql.connect(
-        "localhost",
-        "root",
-        "barnformtreefred",
-        "ali_test"
-        )
+    connection = pymysql.connect(**credentials)
     cursor = connection.cursor()
     cursor.execute("SELECT person_name, age FROM person")
     rows = cursor.fetchall()
@@ -56,12 +53,7 @@ def write_people_db(list_name, list_2):
             if person.name == person_1.name:
                 person_found = True
         if person_found == False:
-            connection = pymysql.connect(
-                "localhost",
-                "root",
-                "barnformtreefred",
-                "ali_test"
-                )
+            connection = pymysql.connect(**credentials)
             cursor = connection.cursor()
             cursor.execute(f"INSERT INTO person(person_name, age, favourite_drink_id) values ('{person.name}', '{person.age}', '{favourite_drink_id.drink_id}')")
             connection.commit()

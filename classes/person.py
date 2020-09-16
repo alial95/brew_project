@@ -16,3 +16,8 @@ def make_person(list_name):
         list_name.append(person)
         name_counter += 1
     return person
+
+def make_person_fake():
+    blah_1 = [1]
+    for blah in blah_1:
+        return blah

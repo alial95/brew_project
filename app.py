@@ -6,15 +6,15 @@ from classes.drink import Drink, make_drink
 from menu.menu import show_menu_and_get_selection
 from persistence.file_handling import write_to_file_people, write_to_file_drink, write_preference_to_file, read_from_file, read_from_file_1
 from utils.utils import clear_screen
-from database.read_from_database import read_database_people, read_database_drinks, read_preference
-from database.update_database import write_drinks_db, write_people_db 
+from database.read_from_database import read_database_people, read_database_drinks, read_preference, CREDENTIALS, CREDENTIALS_DOCKER
+from database.update_database import write_drinks_db, write_people_db
 list_drinks, people_list, favourite_drink_list, round_drinks = [], [], [], []
 
 
 def run_app():
-    read_database_drinks(list_drinks)    
-    read_database_people(people_list)
-    read_preference(favourite_drink_list)
+    read_database_drinks(list_drinks, CREDENTIALS)    
+    read_database_people(people_list, CREDENTIALS)
+    read_preference(favourite_drink_list, CREDENTIALS)
     while True:
         selection = show_menu_and_get_selection()
         if selection == 1:
@@ -31,11 +31,7 @@ def run_app():
             input("Please press enter to return to menu.")
         elif selection == 5:
             take_order(people_list, round_drinks, list_drinks)
-        elif selection == ValueError:
-            show_menu_and_get_selection
         elif selection == 6:
-            # read_from_file_2('example.csv', 'example_2.csv', preference_list)
-            # print(preference_list)
             select_preference(people_list, favourite_drink_list, list_drinks)
             input("Please press enter to return to menu.")
         elif selection == 7:
@@ -43,8 +39,8 @@ def run_app():
                 print(favourite)
             input("Please press enter to return to menu.")
         elif selection == 8:
-            write_drinks_db(list_drinks)
-            write_people_db(people_list, favourite_drink_list)
+            write_drinks_db(list_drinks, CREDENTIALS)
+            write_people_db(people_list, favourite_drink_list, CREDENTIALS)
             print("Bye!")
             exit()
 

@@ -9,7 +9,7 @@ from utils.utils import clear_screen
 from database.read_from_database import read_database_people, read_database_drinks, read_preference, CREDENTIALS, CREDENTIALS_DOCKER
 from database.update_database import write_drinks_db, write_people_db
 list_drinks, people_list, favourite_drink_list, round_drinks = [], [], [], []
-""
+
 
 def run_app():
     read_database_drinks(list_drinks, CREDENTIALS)    

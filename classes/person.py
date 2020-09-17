@@ -1,10 +1,14 @@
+
+
 class Person:
     def __init__(self, name, age):
         """Get the human's name and age."""
         self.name = name
-        self.age = age
+        self.age = str(age)
+        self.list = list((self.name, self.age))
     def __repr__(self):
         return f'{self.name}, {self.age}'
+    
 
 def make_person(list_name):
     name_counter = 0
@@ -17,7 +21,3 @@ def make_person(list_name):
         name_counter += 1
     return person
 
-def make_person_fake():
-    blah_1 = [1]
-    for blah in blah_1:
-        return blah

@@ -1,7 +1,8 @@
 import pymysql
-from classes.person import Person
+from classes.preference import Preference
 from classes.drink import Drink
-from classes.preference_test import Preference
+from classes.person import Person
+
 
 CREDENTIALS = {
     "host": "localhost",
@@ -18,29 +19,29 @@ CREDENTIALS_DOCKER = {
     'db': 'brew'
 }
 
-def read_database_people(list_name, credentials):
+def read_database_people(list_name, credentials=CREDENTIALS):
     connection = pymysql.connect(**credentials)
     cursor = connection.cursor()
-    cursor.execute("SELECT person_id, person_name, age FROM person")
+    cursor.execute("SELECT person_name, age, favourite_drink_id FROM person")
     rows = cursor.fetchall()
     for row in rows:
-        person = Person(row[1], row[2])
+        person = Person(row[0], row[1])
         list_name.append(person)
     cursor.close()
     connection.close()
     return list_name
-def read_preference(list_name, credentials):
+def read_preference(list_name, credentials=CREDENTIALS):
     connection = pymysql.connect(**credentials)
     cursor = connection.cursor()
-    cursor.execute("SELECT person_name, d.drink_name, favourite_drink_id FROM person join drinks as d on favourite_drink_id = d.drink_id")
+    cursor.execute("SELECT person_id, person_name, d.drink_name, favourite_drink_id FROM person join drinks as d on favourite_drink_id = d.drink_id order by person_id")
     rows = cursor.fetchall()
     for row in rows:
-        preference = Preference(row[0], row[1], row[2])
+        preference = Preference(row[1], row[2], row[3])
         list_name.append(preference)
     cursor.close()
     connection.close()
     return list_name
-def read_database_drinks(list_name, credentials):
+def read_database_drinks(list_name, credentials=CREDENTIALS):
     connection = pymysql.connect(**credentials)
     cursor = connection.cursor()
     cursor.execute("SELECT drink_id, drink_name, container, volume FROM drinks")
@@ -52,3 +53,13 @@ def read_database_drinks(list_name, credentials):
     connection.close()
     return list_name
 
+def show_preferences(credentials=CREDENTIALS):
+    connection = pymysql.connect(**credentials)
+    cursor = connection.cursor()
+    cursor.execute("SELECT person_name, d.drink_name, favourite_drink_id FROM person join drinks as d on favourite_drink_id = d.drink_id")
+    rows = cursor.fetchall()
+    print("List of Preferences: ")
+    for row in rows:
+        print(row[0]  + ":  " + row[1])  
+    cursor.close
+    connection.close
